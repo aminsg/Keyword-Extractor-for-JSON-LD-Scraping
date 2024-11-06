@@ -49,12 +49,15 @@ python scraper.py
 مثال:
 ```
 URL: https://example.com/page1
+Title: example
 Keywords (JSON-LD): ["keyword1", "keyword2", "keyword3"]
 
 URL: https://example.com/page2
+Title: example1
 Keywords (JSON-LD): ["keyword4", "keyword5"]
-اگر کلمات کلیدی در صفحه پیدا نشوند، به‌جای آن عبارت "کلمه کلیدی JSON-LD یافت نشد" نمایش داده می‌شود.
 ```
+اگر کلمات کلیدی در صفحه پیدا نشوند، به‌جای آن عبارت "کلمه کلیدی JSON-LD یافت نشد" نمایش داده می‌شود.
+
 ## توضیحات فنی
 این اسکریپت از کتابخانه‌های زیر برای استخراج اطلاعات استفاده می‌کند:
 ```
