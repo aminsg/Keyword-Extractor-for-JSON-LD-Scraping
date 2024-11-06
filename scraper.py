@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-from tqdm import tqdm
+from tqdm import tqdm  # برای نوار پیشرفت
 
 # خواندن لینک‌ها از فایل links.txt
 def read_links(file_path):
@@ -24,22 +24,30 @@ def extract_keywords_from_json_ld(soup):
             keywords_json_ld = None
     return keywords_json_ld
 
+# تابع برای استخراج تایتل صفحه
+def extract_title(soup):
+    title = soup.find("title")
+    return title.text.strip() if title else "عنوان یافت نشد"
+
 # تابع برای استخراج اطلاعات
 def extract_info(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
+    # استخراج تایتل صفحه
+    title = extract_title(soup)
+    
     # استخراج کلمه کلیدی از JSON-LD
     keywords_json_ld = extract_keywords_from_json_ld(soup)
     
-    return keywords_json_ld
+    return title, keywords_json_ld
 
 # ذخیره اطلاعات در فایل متنی
 def save_to_file(output_file, urls):
     with open(output_file, "w", encoding="utf-8") as file:
         for i, url in enumerate(tqdm(urls, desc="Processing", unit="link")):
-            keywords_json_ld = extract_info(url)
-            file.write(f"URL: {url}\nKeywords (JSON-LD): {keywords_json_ld if keywords_json_ld else 'کلمه کلیدی JSON-LD یافت نشد'}\n\n")
+            title, keywords_json_ld = extract_info(url)
+            file.write(f"URL: {url}\nTitle: {title}\nKeywords (JSON-LD): {keywords_json_ld if keywords_json_ld else 'کلمه کلیدی JSON-LD یافت نشد'}\n\n")
 
 # خواندن لینک‌ها از فایل links.txt
 urls = read_links("links.txt")
